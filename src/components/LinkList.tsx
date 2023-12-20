@@ -125,6 +125,8 @@ const LinkList = () => {
     return rankedLinks;
   };
 
+  console.log("asat", data);
+
   return (
     <>
       {loading && <p>Loading...</p>}

@@ -50,7 +50,6 @@ const Login = ({ setUserCred }) => {
     },
     onCompleted: ({ login }) => {
       localStorage.setItem(AUTH_TOKEN, login.token);
-
       setUserCred({
         email: formState.email,
         password: formState.password,
