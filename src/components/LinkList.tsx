@@ -85,7 +85,7 @@ const LinkList = () => {
   const page = parseInt(pageIndexParams[pageIndexParams.length - 1]);
   const pageIndex = page ? (page - 1) * LINKS_PER_PAGE : 0;
 
-  const getQueryVariables = (isNewPage, page) => {
+  const getQueryVariables = (isNewPage: any, page: any) => {
     const skip = isNewPage ? (page - 1) * LINKS_PER_PAGE : 0;
     const take = isNewPage ? LINKS_PER_PAGE : 100;
     const orderBy = { createdAt: "desc" };
