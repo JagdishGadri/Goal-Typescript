@@ -5,8 +5,14 @@ import LinkList from "./LinkList";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "./Login";
 import Search from "./Search";
+
+// created type alias for user creds
+type UserCred = {
+  email: string;
+  password: string;
+};
 const App = () => {
-  const [userCred, setUserCred] = useState();
+  const [userCred, setUserCred] = useState<UserCred>();
   return (
     <div className="center w85">
       <Header userCred={userCred} />

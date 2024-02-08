@@ -1,5 +1,9 @@
 import { IUser } from "./Login";
 
+export interface LinkFormState {
+  description: string;
+  url: string;
+}
 export interface IVote {
   id: string;
   user: IUser;

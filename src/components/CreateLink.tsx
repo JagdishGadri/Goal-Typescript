@@ -3,10 +3,10 @@ import { useMutation, gql } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import { FEED_QUERY } from "./LinkList";
 import { AUTH_TOKEN, LINKS_PER_PAGE } from "../constants";
-import { ICachedLinksData } from "../types/CreateLink";
+import { ICachedLinksData, LinkFormState } from "../types/CreateLink";
 
 const CREATE_LINK_MUTATION = gql`
-  mutation PostMutation($description: String!, $url: String!) {
+  mutation PostMutation($description: string, $url: string) {
     post(description: $description, url: $url) {
       id
       createdAt
@@ -18,7 +18,7 @@ const CREATE_LINK_MUTATION = gql`
 
 const CreateLink = () => {
   const navigate = useNavigate();
-  const [formState, setFormState] = useState({
+  const [formState, setFormState] = useState<LinkFormState>({
     description: "",
     url: "",
   });
