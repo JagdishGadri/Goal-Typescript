@@ -4,6 +4,7 @@ import { useQuery, gql } from "@apollo/client";
 import { LINKS_PER_PAGE } from "../constants";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/App.css";
+import { ICachedLinksData } from "./../types/CreateLink";
 
 const NEW_VOTES_SUBSCRIPTION = gql`
   subscription {
@@ -85,7 +86,7 @@ const LinkList = () => {
   const page = parseInt(pageIndexParams[pageIndexParams.length - 1]);
   const pageIndex = page ? (page - 1) * LINKS_PER_PAGE : 0;
 
-  const getQueryVariables = (isNewPage: any, page: any) => {
+  const getQueryVariables = (isNewPage: boolean, page: number) => {
     const skip = isNewPage ? (page - 1) * LINKS_PER_PAGE : 0;
     const take = isNewPage ? LINKS_PER_PAGE : 100;
     const orderBy = { createdAt: "desc" };
@@ -116,16 +117,15 @@ const LinkList = () => {
   subscribeToMore({
     document: NEW_VOTES_SUBSCRIPTION,
   });
-  const getLinksToRender = (isNewPage, data) => {
+  const getLinksToRender = (isNewPage: boolean, data: ICachedLinksData) => {
     if (isNewPage) {
       return data.feed.links;
     }
     const rankedLinks = data.feed.links.slice();
+    //  here, l1 and l2 infering values from provided data type as ICachedLinkData
     rankedLinks.sort((l1, l2) => l2.votes.length - l1.votes.length);
     return rankedLinks;
   };
-
-  console.log("asat", data);
 
   return (
     <>

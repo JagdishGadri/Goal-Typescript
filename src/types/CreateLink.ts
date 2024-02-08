@@ -15,12 +15,15 @@ export interface ILink {
   url: string;
   description: string;
   postedBy: IUser;
-  votes: [IVote];
+  votes: getList<IVote>;
 }
+
+// generic example
+type getList<T> = T[];
 
 export interface IFeed {
   id: string;
-  links: [ILink];
+  links: getList<ILink>;
   count: number;
 }
 
