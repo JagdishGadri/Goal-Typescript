@@ -18,14 +18,27 @@ const CREATE_LINK_MUTATION = gql`
 
 const CreateLink = () => {
   const navigate = useNavigate();
-  const [formState, setFormState] = useState<LinkFormState>({
+
+  const [newLinkData, setNewLinkData] = useState<LinkFormState>({
     description: "",
     url: "",
   });
+
+  //  Generics example
+  const updateLinkData = <T,>(updatedKey: string, updatedValue: T) => {
+    setNewLinkData((prevLinkData) => {
+      const newLinkData = {
+        ...prevLinkData,
+        [updatedKey]: updatedValue,
+      };
+      return newLinkData;
+    });
+  };
+
   const [createLink, newLink] = useMutation(CREATE_LINK_MUTATION, {
     variables: {
-      description: formState.description,
-      url: formState.url,
+      description: newLinkData.description,
+      url: newLinkData.url,
     },
     update: (cache, { data: { post } }) => {
       const take = LINKS_PER_PAGE;
@@ -68,25 +81,15 @@ const CreateLink = () => {
         <div className="flex flex-column mt3">
           <input
             className="mb2"
-            value={formState.description}
-            onChange={(e) =>
-              setFormState({
-                ...formState,
-                description: e.target.value,
-              })
-            }
+            value={newLinkData.description}
+            onChange={(e) => updateLinkData("description", e.target.value)}
             type="text"
             placeholder="A description for the link"
           />
           <input
             className="mb2"
-            value={formState.url}
-            onChange={(e) =>
-              setFormState({
-                ...formState,
-                url: e.target.value,
-              })
-            }
+            value={newLinkData.url}
+            onChange={(e) => updateLinkData("url", e.target.value)}
             type="text"
             placeholder="The URL for the link"
           />
