@@ -96,6 +96,7 @@ const LinkList = () => {
   const { data, loading, error, subscribeToMore } = useQuery(FEED_QUERY, {
     variables: getQueryVariables(isNewPage, page),
   });
+  console.log("data1", data);
 
   subscribeToMore({
     document: NEW_LINKS_SUBSCRIPTION,

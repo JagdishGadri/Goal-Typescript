@@ -6,7 +6,7 @@ import { AUTH_TOKEN, LINKS_PER_PAGE } from "../constants";
 import { ICachedLinksData, LinkFormState } from "../types/CreateLink";
 
 const CREATE_LINK_MUTATION = gql`
-  mutation PostMutation($description: string, $url: string) {
+  mutation PostMutation($description: String!, $url: String!) {
     post(description: $description, url: $url) {
       id
       createdAt
@@ -34,7 +34,6 @@ const CreateLink = () => {
       return newLinkData;
     });
   };
-
   const [createLink, newLink] = useMutation(CREATE_LINK_MUTATION, {
     variables: {
       description: newLinkData.description,
@@ -53,19 +52,35 @@ const CreateLink = () => {
         },
       });
 
-      cache.writeQuery({
-        query: FEED_QUERY,
-        data: {
-          feed: {
-            links: [post, ...data!.feed.links],
+      if (data) {
+        cache.writeQuery({
+          query: FEED_QUERY,
+          data: {
+            feed: {
+              links: [post, ...data!.feed.links],
+            },
           },
-        },
-        variables: {
-          take,
-          skip,
-          orderBy,
-        },
-      });
+          variables: {
+            take,
+            skip,
+            orderBy,
+          },
+        });
+      } else {
+        cache.writeQuery({
+          query: FEED_QUERY,
+          data: {
+            feed: {
+              links: [post],
+            },
+          },
+          variables: {
+            take,
+            skip,
+            orderBy,
+          },
+        });
+      }
     },
     onCompleted: () => navigate("/"),
   });
